@@ -1,0 +1,65 @@
+{
+  # CALLING LIBRARIES
+  library(psych)
+  
+  # GETTING DATA
+  DATA=iris
+  
+  # VIEWING DATA
+  str(DATA)
+  summary(DATA)
+  head(DATA)
+  
+  # NON PROBABILITIC SAMPLING
+  NONPROBABILITIC=iris[1:50,]
+  summary(NONPROBABILITIC)
+  
+  # DATA SUBSETTING AND PREPARATION
+  set.seed(1234)
+  
+  TRAINING=NONPROBABILITIC[1:35,-5]
+  TESTING=NONPROBABILITIC[36:50,-5]
+  summary(TRAINING)
+  summary(TESTING)
+  
+  
+  # CREATING MULTIPLE LINEAR REGRESSION MODEL
+  MODEL=lm(Sepal.Width~.,data=TRAINING)
+  summary(MODEL)
+  
+  
+  # PLOTTING MODEL
+  p=plot(TRAINING$Sepal.Length,TRAINING$Sepal.Width)
+  abline(MODEL,col='red')
+  cor(iris[1:49,1:4])
+  pairs.panels(iris[1:49,1:4])
+  
+  
+  # CREATING MODEL FOR SIGNIFICANT COLUMN
+  MODEL=lm(Sepal.Width~Sepal.Length,data=TRAINING)
+  summary(MODEL)
+  
+  # PLOTTING MODEL AGAIN FOR SIGNIFICANT COLUMN
+   abline(MODEL,col='green')
+  
+  
+  # PREDICTION
+  summary(TRAINING)
+  (PREDICTION=predict(MODEL,TESTING[1]))
+  cbind(ACTUAL=TESTING[,2],PREDICTION)
+  
+  # PREDICTION FOR PARTICULAR ROW
+  CHECK=TESTING[10,]
+  CHECK=data.frame(Sepal.Length=5.1,Petal.Length=1.9,Petal.width=0.4)
+  (PREDICTED_VALUE=predict(MODEL,CHECK[1]))
+  
+  
+  # FINDING ERROR PERCENTAGE AND ACCURACY
+  DIFFERENCE=abs(TESTING[,2]-PREDICTION)
+  ERROR_PERCENTAGE=DIFFERENCE/TESTING[,2]*100
+  ERROR_PERCENTAGE
+  ACCURACY_PERCENTAGE=100-ERROR_PERCENTAGE
+  ACCURACY_PERCENTAGE
+  mean(ACCURACY_PERCENTAGE)
+}
+                     
